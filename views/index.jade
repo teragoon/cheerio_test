@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  .row
+    form.form-inline(role='form')
+      .form-group
+        label.sr-only(for='query') 검색어
+        input.form-control(type='text', name='query', id='query', placeholder='홍대', autofocus)
+      button.btn.btn-default(type='button', id='searchBtn') 검색
+  .row
+    .logText
+block scripts
+  script(type='text/javascript').
+    $(function() {
+      $('#searchBtn').on('click', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        
+        $.ajax({
+          type: 'GET',
+          url: '/gets',
+          data: {query: $('#query').val()}
+        }).done(function( msg ) {
+          $('.logText').html(msg);
+        });
+      });
+    });
+    
